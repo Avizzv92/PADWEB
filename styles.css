@@ -66,3 +66,15 @@ tr:nth-child(even) {
 tr {
     background-color: white;
 }
+
+td.green_td {
+    background: green;
+}
+
+td.yellow_td {
+    background: yellow;
+}
+
+td.red_td {
+    background: red;
+}
