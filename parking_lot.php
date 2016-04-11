@@ -21,10 +21,9 @@
             $statement->execute();
             $parkingLot = $statement -> fetch();
     ?>
-    <h2> Information for: <?php echo $parkingLot["location"]; ?> </h2>
     
-  
-                       
+    <h2> Information for: <?php echo $parkingLot["location"]; ?> <a href="index.php">(Change)</a></h2>  
+    
     <table>
         <?php
             $parkingSpotSelect = $dbConnection->prepare("SELECT L.parking_spot_id, L.datetime, L.isOccupied FROM occupancy_log L LEFT JOIN occupancy_log R ON L.parking_spot_id = R.parking_spot_id AND L.datetime < R.datetime WHERE isnull (R.parking_spot_id) AND L.parking_lot_id = :id");
@@ -32,8 +31,11 @@
             $parkingSpotSelect->execute();
         ?>
         
+        <br>
         <h3> Latest Information From: <?php $row = $parkingSpotSelect->fetch(PDO::FETCH_ASSOC); echo $row["datetime"];?></h3>
         
+        <center><a href="<?php echo "images/logImg_".$_GET['id'].".png" ?>"><img class="logImg" src="<?php echo "images/logImg_".$_GET['id'].".png" ?>"/></a></center>
+
         <tr>
             <th>Parking Spot ID</th>
             <th>Currently Occupied</th>
@@ -119,7 +121,7 @@
             <td>Monday</td>            
             <?php
                 echo "<td class=\"".classForAverage($avgForMon)."\">";
-                echo $avgForMon;
+                    echo $avgForMon;
                 echo "</td>";  
             ?>
         </tr>
@@ -127,7 +129,7 @@
             <td>Tuesday</td>
             <?php
                 echo "<td class=\"".classForAverage($avgForTue)."\">";
-                echo $avgForTue;
+                    echo $avgForTue;
                 echo "</td>";  
             ?>
         </tr>
@@ -135,7 +137,7 @@
             <td>Wednesday</td>
             <?php
                 echo "<td class=\"".classForAverage($avgForWed)."\">";
-                echo $avgForWed;
+                    echo $avgForWed;
                 echo "</td>";  
             ?>
         </tr>
@@ -143,7 +145,7 @@
             <td>Thursday</td>
             <?php
                 echo "<td class=\"".classForAverage($avgForThu)."\">";
-                echo $avgForThu;
+                    echo $avgForThu;
                 echo "</td>";  
             ?>
         </tr>
@@ -151,7 +153,7 @@
             <td>Friday</td>
             <?php
                 echo "<td class=\"".classForAverage($avgForFri)."\">";
-                echo $avgForFri;
+                    echo $avgForFri;
                 echo "</td>";  
             ?>
         </tr>
@@ -159,7 +161,7 @@
             <td>Saturday</td>
             <?php
                 echo "<td class=\"".classForAverage($avgForSat)."\">";
-                echo $avgForSat;
+                    echo $avgForSat;
                 echo "</td>";  
             ?>
         </tr>
@@ -167,10 +169,38 @@
             <td>Sunday</td>
             <?php
                 echo "<td class=\"".classForAverage($avgForSun)."\">";
-                echo $avgForSun;
+                    echo $avgForSun;
                 echo "</td>";  
             ?>
         </tr>
+    </table>
+    
+    <h3>Historical Usage Level by Hour of Day</h3>
+    
+    <table>
+        <tr>
+            <th>Hour of Day</th>
+            <th>Usage Level*</th>
+        </tr>
+        
+        <?php
+            for($i = 0; $i < 24; $i++) {
+                echo "<tr>";
+                    echo "<td>";
+                        echo ($i)."h";
+                    echo "</td>";
+                
+                    $parkingOccupancyAvgByHr = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE HOUR(datetime) = :hr AND parking_lot_id = :id");
+                    $parkingOccupancyAvgByHr->bindParam(':id', $_GET['id']);
+                    $parkingOccupancyAvgByHr->bindParam(':hr', $i);
+                    $parkingOccupancyAvgByHr->execute();
+                    $returnedRowHr = $parkingOccupancyAvgByHr -> fetch();
+                    $avgForHr =  $returnedRowHr["avg"] == null ? 0 : $returnedRowHr["avg"];
+                    
+                    echo "<td class=\"".classForAverage($avgForHr)."\">".$avgForHr."</td>";
+                echo "</tr>";
+            }
+        ?>
     </table>
     
     <h5>*Usage Level is calculated by averaging the occupancy (1 or 0) of all of the logged data for a given day of the week.</h5>

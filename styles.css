@@ -35,7 +35,8 @@ footer {
     text-align: center;
     color: white;
     background: lightslategray;
-    padding: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     font-size: 13px;
 }
 
@@ -77,4 +78,8 @@ td.yellow_td {
 
 td.red_td {
     background: red;
+}
+
+.logImg {
+    width: 600px;
 }
