@@ -220,7 +220,7 @@
         ?>
     </table>
     
-    <h5>*Usage Level is calculated by averaging the occupancy (1 or 0) of all of the logged data for a given day of the week.</h5>
+    <h5>*Usage Level is calculated by averaging the occupancy (1 or 0) of all of the logged data (within the past 365 days) for a given time period.</h5>
 
     <footer>Designed by: Aaron Vizzini & Wu Weibo</footer>
 </html>
