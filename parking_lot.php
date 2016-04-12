@@ -24,25 +24,42 @@
     
     <h2> Information for: <?php echo $parkingLot["location"]; ?> <a href="index.php">(Change)</a></h2>  
     
-    <table>
         <?php
             $parkingSpotSelect = $dbConnection->prepare("SELECT L.parking_spot_id, L.datetime, L.isOccupied FROM occupancy_log L LEFT JOIN occupancy_log R ON L.parking_spot_id = R.parking_spot_id AND L.datetime < R.datetime WHERE isnull (R.parking_spot_id) AND L.parking_lot_id = :id");
             $parkingSpotSelect->bindParam(':id', $_GET['id']);
             $parkingSpotSelect->execute();
+            $parkingSpotRows = $parkingSpotSelect->fetchAll(PDO::FETCH_ASSOC)
         ?>
         
         <br>
-        <h3> Latest Information From: <?php $row = $parkingSpotSelect->fetch(PDO::FETCH_ASSOC); echo $row["datetime"];?></h3>
+        <h3> Latest Information From: <?php echo $parkingSpotRows[0]["datetime"];?></h3>
         
         <center><a href="<?php echo "images/logImg_".$_GET['id'].".png" ?>"><img class="logImg" src="<?php echo "images/logImg_".$_GET['id'].".png" ?>"/></a></center>
 
+    <table>
+        <tr>
+            <th>Detailed Information</th>
+        </tr>
+        <?php
+            $totalSpots = count($parkingSpotRows);
+            $totalOccupied = 0;
+
+            foreach ($parkingSpotRows as $row) { if($row["isOccupied"] == "1"){$totalOccupied++;}}
+
+            echo "<tr><td>Total Spots: ".$totalSpots."</td></tr>";
+            echo "<tr><td>Spots Occupied: ".$totalOccupied."</td></tr>";
+            echo "<tr><td>Spots Free: ".($totalSpots - $totalOccupied)."</td></tr>";
+            echo "<tr><td>Utilization Percentage: ".($totalOccupied/$totalSpots*100)."%</td></tr>";
+        ?>
+    </table>
+    
+    <table>
         <tr>
             <th>Parking Spot ID</th>
             <th>Currently Occupied</th>
         </tr>
         <?php
-            $parkingSpotSelect->execute();
-            while ($row = $parkingSpotSelect->fetch(PDO::FETCH_ASSOC)) {
+            foreach ($parkingSpotRows as $row) {
                 echo "<tr>";
                 echo "<td>".$row["parking_spot_id"]."</td>";
                 $isOccupied = $row["isOccupied"]  == "1" ? "YES" : "NO";
