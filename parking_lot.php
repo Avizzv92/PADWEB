@@ -9,7 +9,7 @@
     </head>
  
 <body>
-    <h1>Parking Availability Detection</h1>
+    <a id="headerLink" href="index.php"><h1>Parking Availability Detection</h1></a>
     <?php
             include("dbConnection.php");
             $dbConnection = database_connection();

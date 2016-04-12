@@ -18,8 +18,8 @@
     </head>
  
 <body>
-    <h1>Parking Availability Detection</h1>
-    <h2> Select the parking lot of interest. </h2>
+    <a id="headerLink" href="index.php"><h1>Parking Availability Detection</h1></a>
+    <h2> Administration of Your Parking Lots. </h2>
     
     <?php include 'loginBox.php'; ?>
     <br>

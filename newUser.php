@@ -8,16 +8,9 @@
         <script src="scripts.js"></script>
     </head>
     <body>
-        <header>
-          <div id="leftHeaderSection">
-              <h1>New User</h1>
-          </div>
-
-          <div id="rightHeaderSection">
-              <?php include 'loginBox.php'; ?><br>
-          </div>
-        </header>
-
+        <a id="headerLink" href="index.php"><h1>Parking Availability Detection</h1></a>
+        <h2>Create New User</h2>
+        
         <div id="formBox">
             <form id="standardForm" action="users/register.php" method="post">
                 <h3>Create New User</h3>

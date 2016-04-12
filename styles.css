@@ -100,3 +100,7 @@ td.red_td {
 #logoutForm {
     display: inline-block;
 }
+
+#headerLink {
+    text-decoration: none;
+}
