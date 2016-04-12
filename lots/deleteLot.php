@@ -10,7 +10,12 @@
         
 		$dbConnection = database_connection();
 		
-        //Create this new tag in the DB
+        //Delete the lot from the DB
+        $statement = $dbConnection->prepare("DELETE FROM occupancy_log WHERE parking_lot_id = :id AND :id IN (SELECT id FROM parking_lot WHERE id = :id AND user_id = :user_id)");
+		$statement->bindParam(':id', $id);
+        $statement->bindParam(':user_id', $_SESSION['user_id']);
+		$statement->execute();
+        
 		$statement = $dbConnection->prepare("DELETE FROM parking_lot WHERE id = :id AND user_id = :user_id");
 		$statement->bindParam(':id', $id);
         $statement->bindParam(':user_id', $_SESSION['user_id']);

@@ -3,15 +3,15 @@
 
 	session_start();
 
-    //Must be logged into create a new tag
+    //Must be logged into create a new lot
 	if(isset($_SESSION['valUser'])) {
-		//Description of this new tag
+		//Description of this new lot
         $location = $_POST['location'];
         $pKey = uniqid('',true);
         
 		$dbConnection = database_connection();
 		
-        //Create this new tag in the DB
+        //Create this new lot in the DB
 		$statement = $dbConnection->prepare("INSERT INTO parking_lot (location, pKey, user_id) VALUES (:location, :pKey, :user_id)");
 		$statement->bindParam(':location', $location);
         $statement->bindParam(':pKey', $pKey);
