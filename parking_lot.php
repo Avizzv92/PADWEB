@@ -62,7 +62,7 @@
         $parkingOccupancyAvgTue = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 3 AND parking_lot_id = :id");
         $parkingOccupancyAvgTue->bindParam(':id', $_GET['id']);
         $parkingOccupancyAvgTue->execute();
-        $returnedRowTue = $parkingOccupancyAvgMon -> fetch();
+        $returnedRowTue = $parkingOccupancyAvgTue -> fetch();
         $avgForTue =  $returnedRowTue["avg"] == null ? 0 : $returnedRowTue["avg"];
 
         $parkingOccupancyAvgWed = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 4 AND parking_lot_id = :id");
