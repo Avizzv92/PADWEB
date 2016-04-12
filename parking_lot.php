@@ -28,7 +28,7 @@
             $parkingSpotSelect = $dbConnection->prepare("SELECT L.parking_spot_id, L.datetime, L.isOccupied FROM occupancy_log L LEFT JOIN occupancy_log R ON L.parking_spot_id = R.parking_spot_id AND L.datetime < R.datetime WHERE isnull (R.parking_spot_id) AND L.parking_lot_id = :id");
             $parkingSpotSelect->bindParam(':id', $_GET['id']);
             $parkingSpotSelect->execute();
-            $parkingSpotRows = $parkingSpotSelect->fetchAll(PDO::FETCH_ASSOC)
+            $parkingSpotRows = $parkingSpotSelect->fetchAll(PDO::FETCH_ASSOC);
         ?>
         
         <br>

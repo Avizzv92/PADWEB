@@ -83,3 +83,20 @@ td.red_td {
 .logImg {
     width: 600px;
 }
+
+#standardForm {
+    text-align: center;
+}
+
+#loginBox {
+    margin-top:10px;
+    text-align: center;
+}
+
+#usernameLabel {
+    font-size:14px;
+}
+
+#logoutForm {
+    display: inline-block;
+}
