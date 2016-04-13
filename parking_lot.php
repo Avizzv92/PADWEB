@@ -6,6 +6,9 @@
         <link rel="stylesheet" href="styles.css">
         <script src="jquery-2.1.4.js"></script>
         <script src="scripts.js"></script>
+        
+        <!-- Refresh Page Every 30 Seconds -->
+        <meta http-equiv="refresh" content="30" >
     </head>
  
 <body>
