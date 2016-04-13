@@ -104,3 +104,11 @@ td.red_td {
 #headerLink {
     text-decoration: none;
 }
+
+#dateRangeForm {
+    text-align: center;
+}
+
+label {
+    font-size: 12px;
+}
