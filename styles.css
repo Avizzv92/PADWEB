@@ -112,3 +112,10 @@ td.red_td {
 label {
     font-size: 12px;
 }
+
+.disclaimer {
+    font-size: 12px;
+    text-align: center;
+    margin:5px;
+    width:100%;
+}

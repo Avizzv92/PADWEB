@@ -39,6 +39,8 @@
     
     <h3>Parking Spots</h3>
     <center><button id="saveParkingLotsButton">Save Changes</button></center>
+    <div class="disclaimer">You must restart the software for changes to take affect.</div>
+    
     <table>
         <tr>
             <th>ID</th>
