@@ -89,7 +89,7 @@
         $startDate = $startDate." 00:00:00";
         $endDate = $endDate." 23:59:59";
 
-        $parkingSpotID = $_GET['parkingSpotID'];
+        $parkingSpotID = strlen($_GET['parkingSpotID']) == 0 ? "all" : $_GET['parkingSpotID'];
         $parkingSpotIDClause = $parkingSpotID == "all" ? "" : " AND parking_spot_id = ".$parkingSpotID;
             
         $parkingOccupancyAvgMon = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 2 AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)".$parkingSpotIDClause);
