@@ -52,7 +52,7 @@
             echo "<tr><td>Total Spots: ".$totalSpots."</td></tr>";
             echo "<tr><td>Spots Occupied: ".$totalOccupied."</td></tr>";
             echo "<tr><td>Spots Free: ".($totalSpots - $totalOccupied)."</td></tr>";
-            echo "<tr><td>Utilization Percentage: ".($totalOccupied/$totalSpots*100)."%</td></tr>";
+            echo "<tr><td>Utilization Percentage: ".number_format(($totalOccupied/$totalSpots*100), 2, '.', '')."%</td></tr>";
         ?>
     </table>
     
@@ -88,7 +88,10 @@
         $startDate = $startDate." 00:00:00";
         $endDate = $endDate." 23:59:59";
 
-        $parkingOccupancyAvgMon = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 2 AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)");
+        $parkingSpotID = $_GET['parkingSpotID'];
+        $parkingSpotIDClause = $parkingSpotID == "all" ? "" : " AND parking_spot_id = ".$parkingSpotID;
+            
+        $parkingOccupancyAvgMon = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 2 AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)".$parkingSpotIDClause);
         $parkingOccupancyAvgMon->bindParam(':id', $_GET['id']);
         $parkingOccupancyAvgMon->bindParam(':startDate', $startDate);
         $parkingOccupancyAvgMon->bindParam(':endDate', $endDate);
@@ -96,7 +99,7 @@
         $returnedRowMon = $parkingOccupancyAvgMon -> fetch();
         $avgForMon = $returnedRowMon["avg"] == null ? 0 : $returnedRowMon["avg"];
             
-        $parkingOccupancyAvgTue = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 3 AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)");
+        $parkingOccupancyAvgTue = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 3 AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)".$parkingSpotIDClause);
         $parkingOccupancyAvgTue->bindParam(':id', $_GET['id']);
         $parkingOccupancyAvgTue->bindParam(':startDate', $startDate);
         $parkingOccupancyAvgTue->bindParam(':endDate', $endDate);
@@ -104,7 +107,7 @@
         $returnedRowTue = $parkingOccupancyAvgTue -> fetch();
         $avgForTue =  $returnedRowTue["avg"] == null ? 0 : $returnedRowTue["avg"];
 
-        $parkingOccupancyAvgWed = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 4 AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)");
+        $parkingOccupancyAvgWed = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 4 AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)".$parkingSpotIDClause);
         $parkingOccupancyAvgWed->bindParam(':id', $_GET['id']);
         $parkingOccupancyAvgWed->bindParam(':startDate', $startDate);
         $parkingOccupancyAvgWed->bindParam(':endDate', $endDate);
@@ -112,7 +115,7 @@
         $returnedRowWed = $parkingOccupancyAvgWed -> fetch();
         $avgForWed =  $returnedRowWed["avg"] == null ? 0 : $returnedRowWed["avg"];
 
-        $parkingOccupancyAvgThu = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 5 AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)");
+        $parkingOccupancyAvgThu = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 5 AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)".$parkingSpotIDClause);
         $parkingOccupancyAvgThu->bindParam(':id', $_GET['id']);
         $parkingOccupancyAvgThu->bindParam(':startDate', $startDate);
         $parkingOccupancyAvgThu->bindParam(':endDate', $endDate);
@@ -120,7 +123,7 @@
         $returnedRowThu = $parkingOccupancyAvgThu -> fetch();
         $avgForThu =  $returnedRowThu["avg"] == null ? 0 : $returnedRowThu["avg"];
 
-        $parkingOccupancyAvgFri = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 6 AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)");
+        $parkingOccupancyAvgFri = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 6 AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)".$parkingSpotIDClause);
         $parkingOccupancyAvgFri->bindParam(':id', $_GET['id']);
         $parkingOccupancyAvgFri->bindParam(':startDate', $startDate);
         $parkingOccupancyAvgFri->bindParam(':endDate', $endDate);
@@ -128,7 +131,7 @@
         $returnedRowFri = $parkingOccupancyAvgFri -> fetch();
         $avgForFri =  $returnedRowFri["avg"] == null ? 0 : $returnedRowFri["avg"];
 
-        $parkingOccupancyAvgSat = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 7 AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)");
+        $parkingOccupancyAvgSat = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 7 AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)".$parkingSpotIDClause);
         $parkingOccupancyAvgSat->bindParam(':id', $_GET['id']);
         $parkingOccupancyAvgSat->bindParam(':startDate', $startDate);
         $parkingOccupancyAvgSat->bindParam(':endDate', $endDate);
@@ -136,7 +139,7 @@
         $returnedRowSat = $parkingOccupancyAvgSat -> fetch();
         $avgForSat =  $returnedRowSat["avg"] == null ? 0 : $returnedRowSat["avg"];
 
-        $parkingOccupancyAvgSun = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 1 AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)");
+        $parkingOccupancyAvgSun = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE DAYOFWEEK(datetime) = 1 AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)".$parkingSpotIDClause);
         $parkingOccupancyAvgSun->bindParam(':id', $_GET['id']);
         $parkingOccupancyAvgSun->bindParam(':startDate', $startDate);
         $parkingOccupancyAvgSun->bindParam(':endDate', $endDate);
@@ -164,8 +167,21 @@
         <input type="date" name="startDate" value="<?php echo substr($startDate, 0, 10); ?>" min="<?php $time = strtotime("-1 year", time()); echo date('Y-m-d', $time); ?>">
         <label for="endDate">End Date: </label>
         <input type="date" name="endDate" value="<?php echo substr($endDate, 0, 10); ?>" max="<?php echo date('Y-m-d'); ?>">
+        
+        <label for="parkingSpotID">Parking Spot(s): </label>
+        <select name="parkingSpotID">
+            <option>all</option>
+            <?php
+                foreach ($parkingSpotRows as $row) {
+                    echo "<option value=".$row["parking_spot_id"]." ".($parkingSpotID == $row["parking_spot_id"] ? "selected" : "").">";
+                    echo $row["parking_spot_desc"];
+                    echo "</option>";
+                }
+            ?>
+        </select>
+        
         <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
-        <input type="submit" value="Update Date Range"> 
+        <input type="submit" value="Update Search Range"> 
     </form><br>
     
     <h3> Historical Usage Level by Day of Week</h3>
@@ -179,7 +195,7 @@
             <td>Monday</td>            
             <?php
                 echo "<td class=\"".classForAverage($avgForMon)."\">";
-                    echo $avgForMon;
+                    echo number_format($avgForMon, 2, '.', '');
                 echo "</td>";  
             ?>
         </tr>
@@ -187,7 +203,7 @@
             <td>Tuesday</td>
             <?php
                 echo "<td class=\"".classForAverage($avgForTue)."\">";
-                    echo $avgForTue;
+                    echo number_format($avgForTue, 2, '.', '');
                 echo "</td>";  
             ?>
         </tr>
@@ -195,7 +211,7 @@
             <td>Wednesday</td>
             <?php
                 echo "<td class=\"".classForAverage($avgForWed)."\">";
-                    echo $avgForWed;
+                    echo number_format($avgForWed, 2, '.', '');
                 echo "</td>";  
             ?>
         </tr>
@@ -203,7 +219,7 @@
             <td>Thursday</td>
             <?php
                 echo "<td class=\"".classForAverage($avgForThu)."\">";
-                    echo $avgForThu;
+                    echo number_format($avgForThu, 2, '.', '');
                 echo "</td>";  
             ?>
         </tr>
@@ -211,7 +227,7 @@
             <td>Friday</td>
             <?php
                 echo "<td class=\"".classForAverage($avgForFri)."\">";
-                    echo $avgForFri;
+                    echo number_format($avgForFri, 2, '.', '');
                 echo "</td>";  
             ?>
         </tr>
@@ -219,7 +235,7 @@
             <td>Saturday</td>
             <?php
                 echo "<td class=\"".classForAverage($avgForSat)."\">";
-                    echo $avgForSat;
+                    echo number_format($avgForSat, 2, '.', '');
                 echo "</td>";  
             ?>
         </tr>
@@ -227,7 +243,7 @@
             <td>Sunday</td>
             <?php
                 echo "<td class=\"".classForAverage($avgForSun)."\">";
-                    echo $avgForSun;
+                    echo number_format($avgForSun, 2, '.', '');
                 echo "</td>";  
             ?>
         </tr>
@@ -248,7 +264,7 @@
                         echo ($i)."h";
                     echo "</td>";
                 
-                    $parkingOccupancyAvgByHr = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE HOUR(datetime) = :hr AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)");
+                    $parkingOccupancyAvgByHr = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE HOUR(datetime) = :hr AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)".$parkingSpotIDClause);
                     $parkingOccupancyAvgByHr->bindParam(':id', $_GET['id']);
                     $parkingOccupancyAvgByHr->bindParam(':hr', $i);
                     $parkingOccupancyAvgByHr->bindParam(':startDate', $startDate);
@@ -257,7 +273,7 @@
                     $returnedRowHr = $parkingOccupancyAvgByHr -> fetch();
                     $avgForHr =  $returnedRowHr["avg"] == null ? 0 : $returnedRowHr["avg"];
                     
-                    echo "<td class=\"".classForAverage($avgForHr)."\">".$avgForHr."</td>";
+                    echo "<td class=\"".classForAverage($avgForHr)."\">".number_format($avgForHr, 2, '.', '')."</td>";
                 echo "</tr>";
             }
         ?>
