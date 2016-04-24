@@ -4,8 +4,8 @@
         <meta charset="utf-8">
         <title>Create New User</title>
         <link rel="stylesheet" href="styles.css">
-        <script src="https://code.jquery.com/jquery-2.1.4.min.js "></script>
-        <script src="scripts.js"></script>
+        <script src="scripts/jquery-2.1.4.js"></script>
+        <script src="scripts/main.js"></script>
     </head>
     <body>
         <a id="headerLink" href="index.php"><h1>Parking Availability Detection</h1></a>

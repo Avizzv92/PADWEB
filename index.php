@@ -4,8 +4,8 @@
     <meta charset="utf-8">
         <title>Parking Availability Detection</title>
         <link rel="stylesheet" href="styles.css">
-        <script src="jquery-2.1.4.js"></script>
-        <script src="scripts.js"></script>
+        <script src="scripts/jquery-2.1.4.js"></script>
+        <script src="scripts/main.js"></script>
     </head>
  
 <body>

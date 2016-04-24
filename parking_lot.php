@@ -4,8 +4,9 @@
     <meta charset="utf-8">
         <title>Parking Availability Detection</title>
         <link rel="stylesheet" href="styles.css">
-        <script src="jquery-2.1.4.js"></script>
-        <script src="scripts.js"></script>
+        <script src="scripts/Chart.min.js"></script>
+        <script src="scripts/jquery-2.1.4.js"></script>
+        <script src="scripts/main.js"></script>
         
         <!-- Refresh Page Every 30 Seconds -->
         <meta http-equiv="refresh" content="30" >
@@ -38,7 +39,7 @@
         <h3> Latest Information From: <?php echo $parkingSpotRows[0]["datetime"];?></h3>
         <div class="disclaimer">Page refreshes every 30 seconds.</div>
         <center><a href="<?php echo "images/logImg_".$_GET['id'].".png" ?>"><img class="logImg" src="<?php echo "images/logImg_".$_GET['id'].".png" ?>"/></a></center>
-
+    
     <table>
         <tr>
             <th>Detailed Information</th>
@@ -186,98 +187,32 @@
     
     <h3> Historical Usage Level by Day of Week</h3>
     
-    <table>
-        <tr>
-            <th>Day of Week</th>
-            <th>Usage Level*</th>
-        </tr>
-        <tr>
-            <td>Monday</td>            
-            <?php
-                echo "<td class=\"".classForAverage($avgForMon)."\">";
-                    echo number_format($avgForMon, 2, '.', '');
-                echo "</td>";  
-            ?>
-        </tr>
-        <tr>
-            <td>Tuesday</td>
-            <?php
-                echo "<td class=\"".classForAverage($avgForTue)."\">";
-                    echo number_format($avgForTue, 2, '.', '');
-                echo "</td>";  
-            ?>
-        </tr>
-        <tr>
-            <td>Wednesday</td>
-            <?php
-                echo "<td class=\"".classForAverage($avgForWed)."\">";
-                    echo number_format($avgForWed, 2, '.', '');
-                echo "</td>";  
-            ?>
-        </tr>
-        <tr>
-            <td>Thursday</td>
-            <?php
-                echo "<td class=\"".classForAverage($avgForThu)."\">";
-                    echo number_format($avgForThu, 2, '.', '');
-                echo "</td>";  
-            ?>
-        </tr>
-        <tr>
-            <td>Friday</td>
-            <?php
-                echo "<td class=\"".classForAverage($avgForFri)."\">";
-                    echo number_format($avgForFri, 2, '.', '');
-                echo "</td>";  
-            ?>
-        </tr>
-        <tr>
-            <td>Saturday</td>
-            <?php
-                echo "<td class=\"".classForAverage($avgForSat)."\">";
-                    echo number_format($avgForSat, 2, '.', '');
-                echo "</td>";  
-            ?>
-        </tr>
-        <tr>
-            <td>Sunday</td>
-            <?php
-                echo "<td class=\"".classForAverage($avgForSun)."\">";
-                    echo number_format($avgForSun, 2, '.', '');
-                echo "</td>";  
-            ?>
-        </tr>
-    </table>
-    
+    <center><canvas id="weeklyChart" width="800" height="400"></canvas></center><br>
+    <?php echo "<input type='hidden' class='weeklyUsageLevel' value=".number_format($avgForMon, 2, '.', '').">";?>
+    <?php echo "<input type='hidden' class='weeklyUsageLevel' value=".number_format($avgForTue, 2, '.', '').">";?>
+    <?php echo "<input type='hidden' class='weeklyUsageLevel' value=".number_format($avgForWed, 2, '.', '').">";?>
+    <?php echo "<input type='hidden' class='weeklyUsageLevel' value=".number_format($avgForThu, 2, '.', '').">";?>
+    <?php echo "<input type='hidden' class='weeklyUsageLevel' value=".number_format($avgForFri, 2, '.', '').">";?>
+    <?php echo "<input type='hidden' class='weeklyUsageLevel' value=".number_format($avgForSat, 2, '.', '').">";?>
+    <?php echo "<input type='hidden' class='weeklyUsageLevel' value=".number_format($avgForSun, 2, '.', '').">";?>
+
     <h3>Historical Usage Level by Hour of Day</h3>
     
-    <table>
-        <tr>
-            <th>Hour of Day</th>
-            <th>Usage Level*</th>
-        </tr>
-        
-        <?php
-            for($i = 0; $i < 24; $i++) {
-                echo "<tr>";
-                    echo "<td>";
-                        echo ($i)."h";
-                    echo "</td>";
-                
-                    $parkingOccupancyAvgByHr = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE HOUR(datetime) = :hr AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)".$parkingSpotIDClause);
-                    $parkingOccupancyAvgByHr->bindParam(':id', $_GET['id']);
-                    $parkingOccupancyAvgByHr->bindParam(':hr', $i);
-                    $parkingOccupancyAvgByHr->bindParam(':startDate', $startDate);
-                    $parkingOccupancyAvgByHr->bindParam(':endDate', $endDate);
-                    $parkingOccupancyAvgByHr->execute();
-                    $returnedRowHr = $parkingOccupancyAvgByHr -> fetch();
-                    $avgForHr =  $returnedRowHr["avg"] == null ? 0 : $returnedRowHr["avg"];
-                    
-                    echo "<td class=\"".classForAverage($avgForHr)."\">".number_format($avgForHr, 2, '.', '')."</td>";
-                echo "</tr>";
-            }
-        ?>
-    </table>
+    <center><canvas id="hourlyChart" width="800" height="400"></canvas></center>
+    <?php
+        for($i = 0; $i < 24; $i++) {
+            $parkingOccupancyAvgByHr = $dbConnection->prepare("SELECT AVG(isOccupied) as avg FROM occupancy_log WHERE HOUR(datetime) = :hr AND parking_lot_id = :id AND (datetime <= :endDate AND datetime >= :startDate)".$parkingSpotIDClause);
+            $parkingOccupancyAvgByHr->bindParam(':id', $_GET['id']);
+            $parkingOccupancyAvgByHr->bindParam(':hr', $i);
+            $parkingOccupancyAvgByHr->bindParam(':startDate', $startDate);
+            $parkingOccupancyAvgByHr->bindParam(':endDate', $endDate);
+            $parkingOccupancyAvgByHr->execute();
+            $returnedRowHr = $parkingOccupancyAvgByHr -> fetch();
+            $avgForHr =  $returnedRowHr["avg"] == null ? 0 : $returnedRowHr["avg"];
+
+            echo "<input type='hidden' class='hourlyUsageLevel' value=".number_format($avgForHr, 2, '.', '').">";
+        }
+    ?>
     
     <h5>*Usage Level is calculated by averaging the occupancy (1 or 0) of all of the logged data (within the past 365 days) for a given time period.</h5>
 

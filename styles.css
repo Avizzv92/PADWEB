@@ -30,6 +30,9 @@ h3 {
     text-align: center;
 }
 
+h5{
+    font-size: 12px;
+}
 footer {
     width: 100%;
     text-align: center;
@@ -66,18 +69,6 @@ tr:nth-child(even) {
 
 tr {
     background-color: white;
-}
-
-td.green_td {
-    background: green;
-}
-
-td.yellow_td {
-    background: yellow;
-}
-
-td.red_td {
-    background: red;
 }
 
 .logImg {
