@@ -37,6 +37,7 @@
             <th>ID</th>
             <th>Location</th>
             <th>Private Key</th>
+            <th>Modify ROI Thresholds</th>
             <th></th>
         </tr>
         <?php
@@ -51,6 +52,7 @@
                 echo "<td><a href=\"parking_lot.php?id=".$row['id']."\">".$row['id']."</a></td>";
                 echo "<td><a href=\"parking_lot.php?id=".$row['id']."\">".$row['location']."</a></td>";
                 echo "<td><a href=\"parking_lot.php?id=".$row['id']."\">".$row['pKey']."</a></td>";
+                echo "<td><form action=\"roiModify.php\" method=\"get\"> <input type=\"hidden\" name=\"id\" value=\"".$row['id']."\"> <input type=\"submit\" value=\"Manage\"> </form> </td>";
                 echo "<td><form action=\"lots/deleteLot.php\" method=\"post\"> <input type=\"hidden\" name=\"id\" value=\"".$row['id']."\"> <input type=\"submit\" value=\"Delete\"> </form> </td>";
                 echo "</tr>";
             }
