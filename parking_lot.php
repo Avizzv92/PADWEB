@@ -35,7 +35,8 @@
         ?>
         
         <br>
-        <h3> Latest Information From: <?php echo $parkingSpotRows[0]["datetime"];?></h3>        
+        <h3> Latest Information From: <?php echo $parkingSpotRows[0]["datetime"];?></h3>
+        <div class="disclaimer">Page refreshes every 30 seconds.</div>
         <center><a href="<?php echo "images/logImg_".$_GET['id'].".png" ?>"><img class="logImg" src="<?php echo "images/logImg_".$_GET['id'].".png" ?>"/></a></center>
 
     <table>
