@@ -28,15 +28,14 @@
     <h2> Information for: <?php echo $parkingLot["location"]; ?> <a href="index.php">(Change)</a></h2>  
     
         <?php
-            $parkingSpotSelect = $dbConnection->prepare("SELECT L.parking_spot_id, L.datetime, L.isOccupied FROM occupancy_log L LEFT JOIN occupancy_log R ON L.parking_spot_id = R.parking_spot_id AND L.datetime < R.datetime WHERE isnull (R.parking_spot_id) AND L.parking_lot_id = :id");
+            $parkingSpotSelect = $dbConnection->prepare("SELECT L.parking_spot_id, L.datetime, L.isOccupied, L.parking_spot_desc FROM occupancy_log L LEFT JOIN occupancy_log R ON L.parking_spot_id = R.parking_spot_id AND L.datetime < R.datetime WHERE isnull (R.parking_spot_id) AND L.parking_lot_id = :id");
             $parkingSpotSelect->bindParam(':id', $_GET['id']);
             $parkingSpotSelect->execute();
             $parkingSpotRows = $parkingSpotSelect->fetchAll(PDO::FETCH_ASSOC);
         ?>
         
         <br>
-        <h3> Latest Information From: <?php echo $parkingSpotRows[0]["datetime"];?></h3>
-        
+        <h3> Latest Information From: <?php echo $parkingSpotRows[0]["datetime"];?></h3>        
         <center><a href="<?php echo "images/logImg_".$_GET['id'].".png" ?>"><img class="logImg" src="<?php echo "images/logImg_".$_GET['id'].".png" ?>"/></a></center>
 
     <table>
@@ -58,13 +57,13 @@
     
     <table>
         <tr>
-            <th>Parking Spot ID</th>
+            <th>Parking Spot</th>
             <th>Currently Occupied</th>
         </tr>
         <?php
             foreach ($parkingSpotRows as $row) {
                 echo "<tr>";
-                echo "<td>".$row["parking_spot_id"]."</td>";
+                echo "<td>".$row["parking_spot_desc"]."</td>";
                 $isOccupied = $row["isOccupied"]  == "1" ? "YES" : "NO";
                 echo "<td>".$isOccupied."</td>";
                 echo "</tr>";
