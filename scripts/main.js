@@ -39,6 +39,13 @@ $(document).ready(function(){
         });
     }
     
+    $(".DeleteLotForm").submit(function(){
+        var confirmDelete = confirm("Are you sure you want to delete this parking lot?");
+        if(confirmDelete != true){
+            event.preventDefault();
+        }
+    });
+    
     setUpCharts();
 
     function setUpCharts() {
@@ -103,5 +110,4 @@ $(document).ready(function(){
         });
 
     }
-    
 });
