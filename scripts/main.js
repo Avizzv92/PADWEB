@@ -46,7 +46,9 @@ $(document).ready(function(){
         }
     });
     
-    setUpCharts();
+    if($("#weeklyChart").length > 0){
+        setUpCharts();
+    }
 
     function setUpCharts() {
         //Weekly Chart
